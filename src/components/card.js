@@ -1,31 +1,26 @@
-export const cardTemplate = document.querySelector("#card-template").content;
-
 export function createCard(
   cardTemplate,
   item,
   removeCard,
   openImagePopup,
-  likedButton,
+  likedButton
 ) {
   const cardElement = cardTemplate
     .querySelector(".places__item")
     .cloneNode(true);
   const deleteButton = cardElement.querySelector(".card__delete-button");
-
   const cardLikeButton = cardElement.querySelector(".card__like-button");
-
   const cardImage = cardElement.querySelector(".card__image");
   const cardTitle = cardElement.querySelector(".card__title");
+
   cardImage.src = item.link;
   cardImage.alt = item.name;
   cardTitle.textContent = item.name;
 
   deleteButton.addEventListener("click", removeCard);
-
   cardImage.addEventListener("click", function () {
-    openImagePopup(item);
+    openImagePopup(item); 
   });
-
   cardLikeButton.addEventListener("click", likedButton);
 
   return cardElement;

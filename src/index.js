@@ -3,14 +3,12 @@ import "./pages/index.css";
 import { initialCards } from "./scripts/cards.js";
 
 import {
-  cardTemplate,
   createCard,
   removeCard,
   likedButton,
 } from "./components/card.js";
 
 import {
-  allPopups,
   openModal,
   closeModal,
   closePopupOverlay,
@@ -26,19 +24,22 @@ const profileAddButton = profile.querySelector(".profile__add-button");
 const profileTitle = profileInfo.querySelector(".profile__title");
 const profileDescription = profileInfo.querySelector(".profile__description");
 
-const formElement = document.forms["edit-profile"];
-const nameInput = formElement.elements.name;
-const jobInput = formElement.elements.description;
+const profileEditForm = document.forms["edit-profile"];
+const nameInput = profileEditForm.elements.name;
+const jobInput = profileEditForm.elements.description;
+
+const allPopups = document.querySelectorAll(".popup");
 
 const popupTypeImage = document.querySelector(".popup_type_image");
 const popupImage = popupTypeImage.querySelector(".popup__image");
+const popupCaption = popupTypeImage.querySelector(".popup__caption");
 
 const popupTypeNewCard = document.querySelector(".popup_type_new-card");
 const popupTypeEdit = document.querySelector(".popup_type_edit");
 
 const newPlace = document.forms["new-place"];
+const cardTemplate = document.querySelector("#card-template").content;
 
-// Функция добавления новой карточки
 function addNewCard(evt) {
   evt.preventDefault();
 
@@ -55,18 +56,16 @@ function addNewCard(evt) {
     item,
     removeCard,
     openImagePopup,
-    likedButton,
+    likedButton
   );
   placesList.prepend(newCardElement);
 
-  newPlace.closest(".popup").classList.remove("popup_is-opened");
+  closeModal(popupTypeNewCard); 
   evt.target.reset();
 }
 
 // Функция открытия поп-апа для картинок
 function openImagePopup(item) {
-  const popupCaption = popupTypeImage.querySelector(".popup__caption");
-
   popupImage.src = item.link;
   popupImage.alt = item.name;
   popupCaption.textContent = item.name;
@@ -79,20 +78,21 @@ function handleProfileFormSubmit(evt) {
 
   profileTitle.textContent = nameInput.value;
   profileDescription.textContent = jobInput.value;
-  closeModal(popupTypeEdit);
+
+  closeModal(popupTypeEdit); 
 }
 
 // Функция перебора всех поп-апов для удаления класса popup_is-opened
 allPopups.forEach(function (item) {
   const popupCloseButton = item.querySelector(".popup__close");
   popupCloseButton.addEventListener("click", function () {
-    closeModal(item);
+    closeModal(item); 
   });
   item.addEventListener("click", closePopupOverlay);
   item.classList.add("popup_is-animated");
 });
 
-// @todo: Вывести карточки на страницу
+// Выводим карточки на страницу
 initialCards.forEach(function (item) {
   const eachElement = createCard(
     cardTemplate,
@@ -100,23 +100,22 @@ initialCards.forEach(function (item) {
     removeCard,
     openImagePopup,
     likedButton,
-    addNewCard,
+    addNewCard
   );
   placesList.append(eachElement);
 });
 
-// Функция открытия поп-апа редактирования профиля нажатием на карандаш
+// Открытие поп-апа редактирования профиля
 profileEditButton.addEventListener("click", () => {
   openModal(popupTypeEdit);
   nameInput.value = profileTitle.textContent;
   jobInput.value = profileDescription.textContent;
 });
 
-// Функция открытия поп-апа добавления нового места нажатием на плюсик
+// Открытие поп-апа добавления нового места
 profileAddButton.addEventListener("click", () => {
   openModal(popupTypeNewCard);
 });
 
 newPlace.addEventListener("submit", addNewCard);
-
-formElement.addEventListener("submit", handleProfileFormSubmit);
+profileEditForm.addEventListener("submit", handleProfileFormSubmit);
