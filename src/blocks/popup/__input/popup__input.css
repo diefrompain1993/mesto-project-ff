@@ -20,3 +20,7 @@
     line-height: 15px;
   }
 }
+
+.form__input_type_error {
+  border-bottom-color: red;
+}
