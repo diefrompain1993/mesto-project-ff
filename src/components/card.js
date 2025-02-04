@@ -18,7 +18,7 @@ export function createCard(
   const deleteButton = cardElement.querySelector(".card__delete-button");
 
   const cardLikeButton = cardElement.querySelector(".card__like-button");
-  const likesCounter = cardTemplate.querySelector(".likes__counter");
+  const likesCounter = cardElement.querySelector(".likes__counter");
 
   const cardImage = cardElement.querySelector(".card__image");
   const cardTitle = cardElement.querySelector(".card__title");
@@ -27,12 +27,10 @@ export function createCard(
   cardTitle.textContent = item.name;
   likesCounter.textContent = item.likes.length;
 
-  // Скрыть кнопку удаления, если карточку загрузил не я
   if (profileResult._id !== item.owner._id) {
     deleteButton.classList.add("inactive");
   }
 
-  // Закрасить кнопку лайка там, где я его поставил
   if (item.likes.some((like) => like._id === profileResult._id)) {
     cardLikeButton.classList.add("card__like-button_is-active");
   }
